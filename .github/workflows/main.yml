@@ -1,0 +1,29 @@
+name: Ruby - Run Bundler
+
+on:
+  pull_request:
+    paths:
+      - 'ruby/Gemfile'
+      - 'ruby/Gemfile.lock'
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ruby     # if your Gemfile is in the ruby/ folder
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'       # or your preferred Ruby version
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
